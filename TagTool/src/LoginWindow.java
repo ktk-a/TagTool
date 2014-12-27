@@ -13,6 +13,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 
 public class LoginWindow extends JFrame {
@@ -43,6 +44,8 @@ public class LoginWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.CYAN);
+		contentPane.setForeground(Color.BLACK);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -53,6 +56,7 @@ public class LoginWindow extends JFrame {
 		
 		//accountText
 		JTextPane accountText = new JTextPane();
+		accountText.setForeground(Color.GRAY);
 		accountText.setBounds(87, 89, 239, 21);
 		contentPane.add(accountText);
 		
