@@ -1,9 +1,8 @@
 
 public class Tags {
 	private String tagName;
-	private int userLevel;
 	private String[] dataList;		//紀錄哪些data用到此tag(紀錄name)
-	private int dataCount=0;		//有幾個data
+	private int dataCount=0;		//有幾個data用到此tag
 	
 	
 	
