@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 public class Data {
 	public String directory;	//包含路徑跟檔名
 	public String tags;			//一個字串,以","之類的字元分割出各個tag (用strtok之類的?)
-	
+								//////改存索引值?
 	private String tagList[];	//存分割後的tag
 	private int tagCount=0;		//有幾個tag
 	

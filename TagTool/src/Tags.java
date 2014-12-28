@@ -1,11 +1,12 @@
 
 public class Tags {
 	private String tagName;
+	
 	private String[] dataList;		//紀錄哪些data用到此tag(紀錄name)
 	private int dataCount=0;		//有幾個data用到此tag
 	
 	
-	
+	//備忘︰在主程式端寫deleteTag,changeTagName,以名字排序Data[]跟Tags[]
 	
 	
 	
