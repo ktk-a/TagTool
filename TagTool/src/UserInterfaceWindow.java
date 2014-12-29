@@ -56,6 +56,13 @@ public class UserInterfaceWindow extends JFrame {
 		contentPane.add(searchButton);
 		
 		JButton logoutButton = new JButton("Logout");
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LoginWindow loginUi = new LoginWindow();
+				loginUi.show();
+				UserInterfaceWindow.this.dispose();
+			}
+		});
 		logoutButton.setBounds(456, 20, 87, 23);
 		contentPane.add(logoutButton);
 		

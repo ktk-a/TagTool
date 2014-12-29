@@ -1,29 +1,38 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Frame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JTextPane;
+
 import java.awt.Insets;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.io.*;
 
 
-public class LoginWindow extends JFrame {
+public class LoginWindow<C> extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -34,12 +43,16 @@ public class LoginWindow extends JFrame {
 				}
 			}
 		});
+		
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public LoginWindow() {
+	public LoginWindow(){
+		int accountHash =1023432427; 
+		int passwordHash = -1650067834; 
+		
 		setTitle("TagTool");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -80,11 +93,21 @@ public class LoginWindow extends JFrame {
 		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String accoun_ck = new String(accountText.getText());
+
+				String account_ck = new String(accountText.getText());
 				String password_ck = new String(passwordText.getText());
+				if(account_ck.hashCode()==accountHash&&password_ck.hashCode()==passwordHash){
+					System.out.println("1");
+					UserInterfaceWindow ui = new UserInterfaceWindow();
+					ui.show();
+					LoginWindow.this.dispose();
+				}else
+					System.out.println("2");
 			}
 		});
 		loginButton.setBounds(159, 151, 87, 23);
 		contentPane.add(loginButton);
+		
+
 	}
 }
