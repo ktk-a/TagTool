@@ -89,4 +89,59 @@ public class UserInterfaceWindow extends JFrame {
 		testButton.setBounds(348, 87, 87, 23);
 		contentPane.add(testButton);
 	}
+	
+	
+	
+	
+	private static int dataCount=0;
+	private static int tagsCount=0;	
+	private Data[] data;
+	private Tags[] tags;
+	
+	
+	public  void dataSort(Data[] bdata){	//把data依名字做排序
+		for(int i=1;i<=dataCount;i++){
+			Data temp=bdata[i];
+			int j;
+			for(j=i-1;j>=0 && bdata[j].getDataName().compareTo(temp.getDataName())>0;j--)
+				bdata[j+1]=bdata[j];
+			bdata[j+1]=temp;
+		}
+	}
+	
+	public static void tagSort(Tags[] btags){	//把tags依名字做排序
+		for(int i=1;i<=tagsCount;i++){
+			Tags temp=btags[i];
+			int j;
+			for(j=i-1;j>=0 && btags[j].getTagName().compareTo(temp.getTagName())>0;j--)
+				btags[j+1]=btags[j];
+			btags[j+1]=temp;
+		}
+		
+	}
+	
+	public void changeTagName(Tags btag, String string){	//改特定tag的name
+		String[] bdataList=btag.getDataList();	//取出該tag的dataList
+		String buffer=btag.getTagName();		//暫存修改前的tag名
+		btag.changeTagName(string);				//改tag名
+		for(int i=1;i<=btag.getDataCount();i++){
+			for(int j=1;j<=dataCount;j++){
+				if(data[j].getDataName().compareTo(bdataList[i])==0){
+					data[j].tagList[data[j].searchTag(buffer)]=string;	//把data中的tag改名
+					data[j].sort();	//tagList有更動後必定重新排序tagList
+					data[j].bind();	//並且合併成字串,方便顯示於UI
+				}
+			}
+			
+		}
+		
+	}
+	
+	public void deleteTag(Tags btag){	//刪除tag
+		String[] bdataList=btag.getDataList();	//取出該tag的dataList
+		//未完成
+	}
+	
+	
+	
 }

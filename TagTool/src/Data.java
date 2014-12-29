@@ -1,12 +1,14 @@
 import java.util.StringTokenizer;
-
+//備忘：changeTag之減少tag未完成
+//用searchTag==0去做
+//changeTag需要判斷新舊字串有幾個tag
 
 public class Data {
 	public String directory;	//包含路徑跟檔名
-	public String tags;			//一個字串,以","之類的字元分割出各個tag (用strtok之類的?)
-								//////改存索引值?
-	private String tagList[];	//存分割後的tag
-	private int tagCount=0;		//有幾個tag
+	private String dataName;	//檔名
+	public String tags;			//一個字串,以","之類的字元分割出各個tag
+	public String tagList[];	//存分割後的tag
+	private int tagCount=0;		//此data有幾個tag
 	
 	public boolean dataAvailable(){	//檔案是否存在檔案系統
 		
@@ -14,6 +16,7 @@ public class Data {
 	}
 	
 	public void changeTag(String inputString){	//供UI調用,change tag按鈕按下去時候
+		
 		tags=inputString;
 		tagToken(tags);
 	}
@@ -30,6 +33,10 @@ public class Data {
 		
 	}
 	
+	public String getDataName(){
+		return dataName;
+	}
+	
 	private void tagToken(String tagString){
 		StringTokenizer Tok=new StringTokenizer(tagString,",");	//以","做區隔
 		String buffer="";
@@ -43,17 +50,35 @@ public class Data {
 		
 	}
 	
-	public int searchTag(String tag){
+	public int searchTag(String btag){
 		int index=0;					//若return 0 代表該tag不存在
 		for(int i=1;i<=tagCount;i++){
-			if(tag==tagList[i]){
+			if(btag==tagList[i]){
 				index=i;
-				return index;
+				return index;		//找到tag就回傳所在index
 			}
 		}
 		
-		return index;
+		return index;	//否則回傳0
 	}
-
+	
+	public void sort(){		//把分割後的tag做排序
+		for(int i=1;i<=tagCount;i++){
+			String temp=tagList[i];
+			int j;
+			for(j=i-1;j>=0 && tagList[j].compareTo(temp)>0;j--)
+				tagList[j+1]=tagList[j];
+			tagList[j+1]=temp;
+		}
+	}
+	
+	public void bind(){		//把排序後的tag丟回字串,用來顯示在UI上
+		tags="";
+		for(int i=1;i<tagCount;i++){
+			tags+=tagList[i]+",";
+		}
+		tags+=tagList[tagCount];
+	}
+	
 
 }

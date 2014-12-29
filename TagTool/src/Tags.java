@@ -8,7 +8,12 @@ public class Tags {
 	
 	//備忘︰在主程式端寫deleteTag,changeTagName,以名字排序Data[]跟Tags[]
 	
-	
+	public String[] getDataList(){
+		return dataList;
+	}
+	public int getDataCount(){
+		return dataCount;
+	}
 	
 	public String getTagName(){		//取得tag的name
 		return tagName;
@@ -17,5 +22,17 @@ public class Tags {
 		tagName=newName;
 	}
 	
+	
+	public int searchData(String bdata){
+		int index=0;					//若return 0 代表該tag不存在
+		for(int i=1;i<=dataCount;i++){
+			if(bdata==dataList[i]){
+				index=i;
+				return index;
+			}
+		}
+		
+		return index;
+	}
 	
 }
