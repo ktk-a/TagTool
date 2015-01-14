@@ -7,14 +7,21 @@ public class Data {
 	public String directory;	//包含路徑跟檔名
 	private String dataName;	//檔名
 	public String tags;			//一個字串,以","之類的字元分割出各個tag
-	public String tagList[];	//存分割後的tag
+	public String tagList[] = new String[50];	//存分割後的tag
 	private int tagCount=0;		//此data有幾個tag
 	
 	public boolean dataAvailable(){	//檔案是否存在檔案系統
 		
 		return true;
 	}
-	
+	public int getCount(){
+		return tagCount;
+	}
+	void defaultData(String name,String tagsInput){
+		dataName = name ;
+		changeTag(tagsInput);
+		
+	}
 	public void changeTag(String inputString){	//供UI調用,change tag按鈕按下去時候
 		
 		tags=inputString;
@@ -36,18 +43,21 @@ public class Data {
 	public String getDataName(){
 		return dataName;
 	}
-	
+
 	private void tagToken(String tagString){
-		StringTokenizer Tok=new StringTokenizer(tagString,",");	//以","做區隔
-		String buffer="";
+		if(tagString!=""){
+			
+			StringTokenizer Tok=new StringTokenizer(tagString,",");	//以","做區隔
+			String buffer="";
 		
-		while (Tok.hasMoreElements()){
-			buffer=(String) Tok.nextElement();
-			if(searchTag(buffer)==0){
-				tagList[++tagCount]=buffer;	//注意陣列索引值是從1~tagCount,0暫不使用
+			while (Tok.hasMoreElements()){
+				buffer=(String) Tok.nextElement();
+				if(searchTag(buffer)==0){
+				tagList[++tagCount] = new String("");
+				tagList[tagCount]=buffer;	//注意陣列索引值是從1~tagCount,0暫不使用
+				}
 			}
 		}
-		
 	}
 	
 	public int searchTag(String btag){

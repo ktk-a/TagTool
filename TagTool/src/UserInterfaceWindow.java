@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
@@ -39,12 +40,46 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 		});
+
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public UserInterfaceWindow() {
+		DefaultTableModel DTM = new DefaultTableModel();
+		String s[]={"fileName","Tags"};
+		DTM.setColumnIdentifiers(s);
+		Root a = new Root();
+		File f = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\");
+		File[] list = f.listFiles();
+		
+		Data[] datalist = new Data[list.length];
+		for(int i=0;i<datalist.length;i++){
+			String tagStr = new String("None");
+			File tags = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\",list[i].getName()+".txt");
+			if(!tags.exists())
+				try{
+				tags.createNewFile();
+				}catch(IOException e){}
+			else{
+				try{
+					FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[i].getName()+".txt");
+					BufferedReader br = new BufferedReader(FileStream);
+					tagStr = br.readLine();
+				}catch(IOException e){}
+
+			}
+			datalist[i] = new Data(); 
+			datalist[i].defaultData(list[i].getName(),tagStr);
+			
+			DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+			for(int j=1;j<=datalist[i].getCount();j++){
+				System.out.print(datalist[i].tagList[j]+",");
+				
+			}
+			System.out.println();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
 		contentPane = new JPanel();
@@ -73,7 +108,6 @@ public class UserInterfaceWindow extends JFrame {
 		logoutButton.setBounds(456, 20, 87, 23);
 		contentPane.add(logoutButton);
 		
-		DefaultTableModel DTM = new DefaultTableModel();
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(43, 128, 392, 224);
@@ -93,37 +127,74 @@ public class UserInterfaceWindow extends JFrame {
 		table.getColumnModel().getColumn(2).setPreferredWidth(50);
 		
 		table.setModel(DTM);
+		table.addMouseListener(null);
 		
 		JButton editButton = new JButton("Edit");
+		editButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row =table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				if( row>=0 && column==1){
+					String edit = JOptionPane.showInputDialog("請輸入修改後的tag");
+					try{
+				        FileWriter fw = new FileWriter("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[row].getName()+".txt");
+				        fw.write(edit);
+				        fw.flush();
+				        fw.close();
+						table.setValueAt(edit,row,column);
+						}catch(IOException e2){}
+				}
+			}
+			
+		});
 		editButton.setBounds(456, 223, 87, 23);
 		contentPane.add(editButton);
 		
 		JButton clearButton = new JButton("Clear");
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row =table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				if( row>=0 && column==1){
+					 int option = JOptionPane.showConfirmDialog(null, "這個動作將會清除所有Tags 繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
+					 if(option==0){
+							try{
+						        FileWriter fw = new FileWriter("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[row].getName()+".txt");
+						        fw.write("");
+						        fw.flush();
+						        fw.close();
+								table.setValueAt("",row,column);
+								}catch(IOException e2){}
+					 }
+
+				}
+			}
+		});
 		clearButton.setBounds(456, 265, 87, 23);
 		contentPane.add(clearButton);
 		
 		JButton removeButton = new JButton("Remove");
-		removeButton.setBounds(456, 307, 87, 23);
-		contentPane.add(removeButton);
-		
-		
-		
-		JButton testButton = new JButton("Test");
-		testButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String s[]={"fileName","Tags"};
-				DTM.setColumnIdentifiers(s);
-				Root a = new Root();
-				File f = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\");
-				File[] list = f.listFiles();
-				
-				for(int i=0;i<list.length;i++){
-					DTM.addRow(new Object[]{list[i].getName(),list[i].getName()});
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row =table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				if( row>=0 && column==0){
+					int option = JOptionPane.showConfirmDialog(null, "這個動作將會刪除這個檔案  繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
+					if(option!=0){
+						File tag = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\"+list[row].getName()+".txt");
+						File data = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\"+list[row].getName());
+						tag.delete();
+						data.delete();
+						datalist[row].removeData();
+						for(int i=row;i<(datalist.length-1);i++)
+							datalist[i]=datalist[i+1];
+						DTM.removeRow(row);
+					}
 				}
 			}
 		});
-		testButton.setBounds(348, 87, 87, 23);
-		contentPane.add(testButton);
+		removeButton.setBounds(456, 307, 87, 23);
+		contentPane.add(removeButton);
 	}
 		
 	
