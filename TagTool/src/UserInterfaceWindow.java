@@ -74,6 +74,7 @@ public class UserInterfaceWindow extends JFrame {
 			datalist[i].defaultData(list[i].getName(),tagStr);
 			
 			DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+			System.out.println(DTM.getRowCount());
 			for(int j=1;j<=datalist[i].getCount();j++){
 				System.out.print(datalist[i].tagList[j]+",");
 				
@@ -93,6 +94,22 @@ public class UserInterfaceWindow extends JFrame {
 		contentPane.add(searchText);
 		
 		JButton searchButton = new JButton("Search");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				while(DTM.getRowCount()>0)
+					DTM.removeRow(0);
+				String searchStr = new String(searchText.getText());
+				if(searchStr.equals("")){
+					for(int i =0;i<datalist.length;i++)
+						DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+				}else{
+					for(int i = 0 ;i<datalist.length;i++){
+						if(datalist[i].searchTag(searchStr)!=0)
+							DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+					}
+				}
+			}
+		});
 		searchButton.setForeground(new Color(0, 0, 0));
 		searchButton.setBounds(167, 47, 87, 23);
 		contentPane.add(searchButton);

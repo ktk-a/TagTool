@@ -63,7 +63,7 @@ public class Data {
 	public int searchTag(String btag){
 		int index=0;					//若return 0 代表該tag不存在
 		for(int i=1;i<=tagCount;i++){
-			if(btag==tagList[i]){
+			if(btag.equals(tagList[i])){
 				index=i;
 				return index;		//找到tag就回傳所在index
 			}
