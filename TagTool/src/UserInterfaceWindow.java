@@ -66,9 +66,13 @@ public class UserInterfaceWindow extends JFrame {
 				try{
 					FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[i].getName()+".txt");
 					BufferedReader br = new BufferedReader(FileStream);
-					tagStr = br.readLine();
-				}catch(IOException e){}
-
+					tagStr= br.readLine();
+					if(tagStr==null)
+						tagStr="";
+				}catch(IOException e){
+					System.out.println("error");
+					tagStr="";
+				}
 			}
 			datalist[i] = new Data(); 
 			datalist[i].defaultData(list[i].getName(),tagStr);

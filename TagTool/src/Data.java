@@ -45,8 +45,8 @@ public class Data {
 	}
 
 	private void tagToken(String tagString){
-		if(tagString!=""){
-			
+		if(tagString.equals("")){
+		}else{
 			StringTokenizer Tok=new StringTokenizer(tagString,",");	//¥H","°µ°Ï¹j
 			String buffer="";
 		
