@@ -108,6 +108,16 @@ public class LoginWindow<C> extends JFrame {
 		loginButton.setBounds(159, 151, 87, 23);
 		contentPane.add(loginButton);
 		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Root a = new Root();
+				a.output();
+			}
+		});
+		btnNewButton.setBounds(26, 208, 87, 23);
+		contentPane.add(btnNewButton);
+		
 
 	}
 }

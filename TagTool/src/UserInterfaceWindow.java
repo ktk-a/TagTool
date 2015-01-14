@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.util.*;
+import java.io.*;
+import java.lang.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -66,6 +68,8 @@ public class UserInterfaceWindow extends JFrame {
 		logoutButton.setBounds(456, 20, 87, 23);
 		contentPane.add(logoutButton);
 		
+		DefaultTableModel DTM = new DefaultTableModel();
+		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -80,6 +84,8 @@ public class UserInterfaceWindow extends JFrame {
 		table.setBounds(43, 128, 392, 224);
 		contentPane.add(table);
 		
+		table.setModel(DTM);
+		
 		JButton editButton = new JButton("Edit");
 		editButton.setBounds(456, 223, 87, 23);
 		contentPane.add(editButton);
@@ -93,6 +99,19 @@ public class UserInterfaceWindow extends JFrame {
 		contentPane.add(removeButton);
 		
 		JButton testButton = new JButton("Test");
+		testButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String s[]={"fileName","Tags"};
+				DTM.setColumnIdentifiers(s);
+				Root a = new Root();
+				File f = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\");
+				File[] list = f.listFiles();
+				
+				for(int i=0;i<list.length;i++){
+					DTM.addRow(new Object[]{list[i].getName(),list[i].getName()});
+				}
+			}
+		});
 		testButton.setBounds(348, 87, 87, 23);
 		contentPane.add(testButton);
 	}
