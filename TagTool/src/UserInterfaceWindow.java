@@ -3,14 +3,19 @@ import java.awt.EventQueue;
 import java.util.*;
 import java.io.*;
 import java.lang.*;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.Color;
+
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -70,7 +75,12 @@ public class UserInterfaceWindow extends JFrame {
 		
 		DefaultTableModel DTM = new DefaultTableModel();
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(43, 128, 392, 224);
+		contentPane.add(scrollPane);
+		
 		table = new JTable();
+		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null},
@@ -81,8 +91,6 @@ public class UserInterfaceWindow extends JFrame {
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(50);
 		table.getColumnModel().getColumn(2).setPreferredWidth(50);
-		table.setBounds(43, 128, 392, 224);
-		contentPane.add(table);
 		
 		table.setModel(DTM);
 		
@@ -97,6 +105,8 @@ public class UserInterfaceWindow extends JFrame {
 		JButton removeButton = new JButton("Remove");
 		removeButton.setBounds(456, 307, 87, 23);
 		contentPane.add(removeButton);
+		
+		
 		
 		JButton testButton = new JButton("Test");
 		testButton.addActionListener(new ActionListener() {
@@ -115,7 +125,7 @@ public class UserInterfaceWindow extends JFrame {
 		testButton.setBounds(348, 87, 87, 23);
 		contentPane.add(testButton);
 	}
-	
+		
 	
 	
 	
@@ -167,7 +177,4 @@ public class UserInterfaceWindow extends JFrame {
 		String[] bdataList=btag.getDataList();	//取出該tag的dataList
 		//未完成
 	}
-	
-	
-	
 }

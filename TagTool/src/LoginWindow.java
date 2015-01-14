@@ -93,16 +93,18 @@ public class LoginWindow<C> extends JFrame {
 		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				UserInterfaceWindow ui = new UserInterfaceWindow();
+				ui.show();
+				LoginWindow.this.dispose();
 
 				String account_ck = new String(accountText.getText());
 				String password_ck = new String(passwordText.getText());
-				if(account_ck.hashCode()==accountHash&&password_ck.hashCode()==passwordHash){
-					System.out.println("1");
+		/*		if(account_ck.hashCode()==accountHash&&password_ck.hashCode()==passwordHash){
 					UserInterfaceWindow ui = new UserInterfaceWindow();
 					ui.show();
 					LoginWindow.this.dispose();
 				}else
-					System.out.println("2");
+					System.out.println("2");*/
 			}
 		});
 		loginButton.setBounds(159, 151, 87, 23);
