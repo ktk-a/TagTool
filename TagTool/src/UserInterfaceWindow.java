@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -19,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 
 
@@ -48,15 +50,21 @@ public class UserInterfaceWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public UserInterfaceWindow() {
+		
 		DefaultTableModel DTM = new DefaultTableModel();
 		String s[]={"fileName","Tags"};
 		DTM.setColumnIdentifiers(s);
 		Root a = new Root();
-		File f = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool","1.txt");
+		a.changeRoot();
+		
+		
+		
+		File f = new File(a.getRoot(),"1.txt");
 		if(!f.exists()){
 			f.getParentFile().mkdirs();
 		}
-		File t = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags","1.txt");
+		
+		File t = new File(a.getTagRoot(),"1.txt");
 		if(!t.exists()){
 			t.getParentFile().mkdirs();
 		}
@@ -65,14 +73,14 @@ public class UserInterfaceWindow extends JFrame {
 		Data[] datalist = new Data[list.length];
 		for(int i=0;i<datalist.length;i++){
 			String tagStr = new String("");
-			File tags = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\"+list[i].getName()+".txt");
+			File tags = new File(a.getTagRoot()+list[i].getName()+".txt");
 			if(!tags.exists())
 				try{
 				tags.createNewFile();
 				}catch(IOException e){}
 			else{
 				try{
-					FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\" + list[i].getName()+".txt");
+					FileReader FileStream= new FileReader(a.getTagRoot() + list[i].getName()+".txt");
 					BufferedReader br = new BufferedReader(FileStream);
 					tagStr= br.readLine();
 					if(tagStr==null)
@@ -119,14 +127,14 @@ public class UserInterfaceWindow extends JFrame {
 
 					for(int i=0;i<datalist.length;i++){
 						String tagStr = new String("");
-						File tags = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\"+list[i].getName()+".txt");
+						File tags = new File(a.getTagRoot()+list[i].getName()+".txt");
 						if(!tags.exists())
 							try{
 							tags.createNewFile();
 							}catch(IOException e2){}
 						else{
 							try{
-								FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\" + list[i].getName()+".txt");
+								FileReader FileStream= new FileReader(a.getTagRoot() + list[i].getName()+".txt");
 								BufferedReader br = new BufferedReader(FileStream);
 								tagStr= br.readLine();
 								if(tagStr==null)
@@ -191,7 +199,7 @@ public class UserInterfaceWindow extends JFrame {
 				int row =table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==1){
-					String edit = JOptionPane.showInputDialog(null,"請輸入修改後的tag", "Exit", JOptionPane.YES_NO_OPTION);
+					String edit = JOptionPane.showInputDialog(null,"請輸入修改後的tag", "Edit", JOptionPane.YES_NO_OPTION);
 					if(edit.equals(null)){}
 					else{
 						table.setValueAt(edit,row,column);
@@ -210,7 +218,7 @@ public class UserInterfaceWindow extends JFrame {
 				int row =table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==1){
-					 int option = JOptionPane.showConfirmDialog(null, "這個動作將會清除所有Tags 繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
+					 int option = JOptionPane.showConfirmDialog(null, "這個動作將會清除所有Tags 繼續 ?", "Clear", JOptionPane.YES_NO_OPTION);
 					 if(option==0){
 							table.setValueAt("",row,column);
 							datalist[row].changeTag("");
@@ -228,7 +236,7 @@ public class UserInterfaceWindow extends JFrame {
 				int row =table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==0){
-					int option = JOptionPane.showConfirmDialog(null, "這個動作將會刪除這個檔案  繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
+					int option = JOptionPane.showConfirmDialog(null, "這個動作將會刪除這個檔案  繼續 ?", "Remove", JOptionPane.YES_NO_OPTION);
 					if(option==0){
 						File tag = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\"+list[row].getName()+".txt");
 						File data = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\"+list[row].getName());
@@ -251,7 +259,7 @@ public class UserInterfaceWindow extends JFrame {
 				int row =table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==1){
-					String edit = JOptionPane.showInputDialog(null,"請輸入欲新增的tag", "Exit", JOptionPane.YES_NO_OPTION);
+					String edit = JOptionPane.showInputDialog(null,"請輸入欲新增的tag", "Add tag", JOptionPane.YES_NO_OPTION);
 					if(edit.equals(null)||edit.equals("")){}
 					else{
 						if(datalist[row].getCount()==0){
@@ -272,10 +280,63 @@ public class UserInterfaceWindow extends JFrame {
 		JLabel root = new JLabel("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool");
 		root.setBounds(43, 97, 342, 21);
 		contentPane.add(root);
+		root.setText(a.getRoot());
 		
 		JButton rootChange = new JButton("更換目錄");
 		rootChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				while(DTM.getRowCount()>0)
+					DTM.removeRow(0);
+
+				a.changeRoot();
+				root.setText(a.getRoot());
+				System.out.println(a.getRoot());
+				
+				File f = new File(a.getRoot(),"1.txt");
+				if(!f.exists()){
+					f.getParentFile().mkdirs();
+				}
+				
+				File t = new File(a.getTagRoot(),"1.txt");
+				if(!t.exists()){
+					t.getParentFile().mkdirs();
+				}
+				
+				File[] list = f.getParentFile().listFiles();
+				Data[] datalist = new Data[list.length];
+				for(int i=0;i<datalist.length;i++){
+					String tagStr = new String("");
+					File tags = new File(a.getTagRoot()+list[i].getName()+".txt");
+					if(!tags.exists())
+						try{
+						tags.createNewFile();
+						}catch(IOException e3){}
+					else{
+						try{
+							FileReader FileStream= new FileReader(a.getTagRoot() + list[i].getName()+".txt");
+							BufferedReader br = new BufferedReader(FileStream);
+							tagStr= br.readLine();
+							if(tagStr==null)
+								tagStr="";
+						}catch(IOException e3){
+							System.out.println("error");
+							tagStr="";
+						}
+					}
+					datalist[i] = new Data(); 
+					datalist[i].defaultData(list[i].getName(),tagStr,tags.getAbsolutePath(),list[i].getAbsolutePath());
+					
+					DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+					System.out.println(DTM.getRowCount());
+					for(int j=1;j<=datalist[i].getCount();j++){
+						System.out.print(datalist[i].tagList[j]+",");
+						
+					}
+					System.out.println();
+			//		System.out.println(datalist[i].tagDirectory);
+				//	System.out.println(datalist[i].dataDirectory);
+				}
+
 			}
 		});
 		rootChange.setBounds(499, 96, 87, 23);

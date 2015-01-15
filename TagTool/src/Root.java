@@ -2,24 +2,41 @@ import java.util.*;
 import java.io.*;
 import java.lang.*;
 
+import javax.swing.JFileChooser;
+
 	
 public class Root {
 	private String directory;
-	private String imageDir;
+	private String tagDir;
 	
 	void Root(){
 		directory =  "C:\\Users\\"+ userName() +"\\git\\TagTool\\TagTool\\";
-		imageDir = "C:\\Users\\"+ userName() +"\\git\\TagTool\\TagTool\\images\\";
+		tagDir = "";
 	} 
 	public String userName(){
 		String userNameString = System.getenv("USERNAME");
 		return userNameString;
 	}
-	public void setRoot(String setDir){
+	public void setRoot(String setDir,String settagDir){
 		directory = setDir;
+		tagDir = settagDir;
 	}
 	public String getRoot(){
-		return imageDir;
+		return directory;
+	}
+	public String getTagRoot(){
+		return tagDir;
+	}
+	public void changeRoot(){
+		JFileChooser chooser = new JFileChooser(); 
+		chooser.setCurrentDirectory(new java.io.File("."));
+		chooser.setDialogTitle("選擇你的目錄");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.showOpenDialog(null) ;
+
+		setRoot(chooser.getSelectedFile().getAbsolutePath(),chooser.getSelectedFile().getParentFile().getAbsolutePath()+"\\tags\\");
+
 	}
 	public void output(){
 		File f = new File(directory, "data.txt");
