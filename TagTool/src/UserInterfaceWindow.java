@@ -209,7 +209,7 @@ public class UserInterfaceWindow extends JFrame {
 			}
 			
 		});
-		editButton.setBounds(624, 163, 87, 23);
+		editButton.setBounds(624, 198, 105, 23);
 		contentPane.add(editButton);
 		
 		JButton clearButton = new JButton("Clear");
@@ -227,7 +227,7 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 		});
-		clearButton.setBounds(624, 196, 87, 23);
+		clearButton.setBounds(624, 231, 105, 23);
 		contentPane.add(clearButton);
 		
 		JButton removeButton = new JButton("Remove");
@@ -250,7 +250,7 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 		});
-		removeButton.setBounds(624, 229, 87, 23);
+		removeButton.setBounds(624, 264, 105, 23);
 		contentPane.add(removeButton);
 		
 		JButton addButton = new JButton("Add tag");
@@ -262,19 +262,21 @@ public class UserInterfaceWindow extends JFrame {
 					String edit = JOptionPane.showInputDialog(null,"請輸入欲新增的tag", "Add tag", JOptionPane.YES_NO_OPTION);
 					if(edit.equals(null)||edit.equals("")){}
 					else{
-						if(datalist[row].getCount()==0){
-							datalist[row].changeTag(edit + datalist[row].tags);
-							table.setValueAt(datalist[row].tags,row,column);
-						}
-						else{
-							datalist[row].changeTag(datalist[row].tags+","+edit);
-							table.setValueAt(datalist[row].tags,row,column);
+						if(datalist[row].searchTag(edit)==0){
+							if(datalist[row].getCount()==0){
+								datalist[row].changeTag(edit + datalist[row].tags);
+								table.setValueAt(datalist[row].tags,row,column);
+							}
+							else{
+								datalist[row].changeTag(datalist[row].tags+","+edit);
+								table.setValueAt(datalist[row].tags,row,column);
+							}
 						}
 					}
 				}
 			}
 		});
-		addButton.setBounds(624, 128, 87, 23);
+		addButton.setBounds(624, 165, 105, 23);
 		contentPane.add(addButton);
 		
 		JLabel root = new JLabel("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool");
@@ -341,6 +343,25 @@ public class UserInterfaceWindow extends JFrame {
 		});
 		rootChange.setBounds(499, 96, 87, 23);
 		contentPane.add(rootChange);
+		
+		JButton deltetTagButton = new JButton("Delate Tag");
+		deltetTagButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String edit = JOptionPane.showInputDialog(null,"請輸入欲刪除的tag", "Edit", JOptionPane.YES_NO_OPTION);
+				if(edit.equals(null)){}
+				else
+					for(int i=0;i<datalist.length;i++)
+						datalist[i].deleteTag(edit);
+				while(DTM.getRowCount()>0)
+					DTM.removeRow(0);
+				
+				for(int i=0;i<datalist.length;i++){
+					DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
+				}
+			}
+		});
+		deltetTagButton.setBounds(624, 132, 105, 23);
+		contentPane.add(deltetTagButton);
 	}
 		
 	

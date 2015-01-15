@@ -106,6 +106,33 @@ public class Data {
 		}
 		tags+=tagList[tagCount];
 	}
-	
+	public void deleteTag(String deTag){
+		tagCount=0;
+		if(tags.equals("")){
+			
+		}else{
+			StringTokenizer Tok=new StringTokenizer(tags,",");	//以","做區隔
+			String buffer="";
+		
+			while (Tok.hasMoreElements()){
+
+				buffer=(String) Tok.nextElement();
+					if(!buffer.equals(deTag)){					
+						if(searchTag(buffer)==0){
+							tagList[++tagCount] = new String("");
+							tagList[tagCount]=buffer;	//注意陣列索引值是從1~tagCount,0暫不使用
+						}
+					}
+			}
+		if(tagCount==0)
+			tags="";
+		for(int i=1;i<=tagCount;i++)
+			if(i==1)
+				tags=tagList[i];
+			else
+				tags=tags+"," + tagList[i];
+		}
+		changeTag(tags);
+	}
 
 }
