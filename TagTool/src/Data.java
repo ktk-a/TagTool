@@ -1,10 +1,13 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.StringTokenizer;
 //備忘：changeTag之減少tag未完成
 //用searchTag==0去做
 //changeTag需要判斷新舊字串有幾個tag
 
 public class Data {
-	public String directory;	//包含路徑跟檔名
+	private String tagDirectory;	//包含路徑跟檔名
+	private String dataDirectory;	//包含路徑跟檔名
 	private String dataName;	//檔名
 	public String tags;			//一個字串,以","之類的字元分割出各個tag
 	public String tagList[] = new String[50];	//存分割後的tag
@@ -17,15 +20,24 @@ public class Data {
 	public int getCount(){
 		return tagCount;
 	}
-	void defaultData(String name,String tagsInput){
+	void defaultData(String name,String tagsInput,String dir,String dir2){
 		dataName = name ;
+		tagDirectory=new String(dir);
+		dataDirectory=new String(dir2);
 		changeTag(tagsInput);
-		
 	}
 	public void changeTag(String inputString){	//供UI調用,change tag按鈕按下去時候
 		
 		tags=inputString;
 		tagToken(tags);
+		try{
+	//		System.out.println(tagDirectory);
+	        FileWriter fw = new FileWriter(tagDirectory);
+	        fw.write(tags);
+	        fw.flush();
+	        fw.close();
+			}catch(IOException e2){}
+
 	}
 	
 	public boolean tagExist(){	//該data是否有tag(已完成)

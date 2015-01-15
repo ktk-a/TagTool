@@ -75,7 +75,7 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 			datalist[i] = new Data(); 
-			datalist[i].defaultData(list[i].getName(),tagStr);
+			datalist[i].defaultData(list[i].getName(),tagStr,tags.getAbsolutePath(),list[i].getAbsolutePath());
 			
 			DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
 			System.out.println(DTM.getRowCount());
@@ -84,6 +84,8 @@ public class UserInterfaceWindow extends JFrame {
 				
 			}
 			System.out.println();
+	//		System.out.println(datalist[i].tagDirectory);
+		//	System.out.println(datalist[i].dataDirectory);
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
@@ -157,13 +159,15 @@ public class UserInterfaceWindow extends JFrame {
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==1){
 					String edit = JOptionPane.showInputDialog("請輸入修改後的tag");
-					try{
+					datalist[row].changeTag(edit);
+					table.setValueAt(edit,row,column);
+	/*				try{
 				        FileWriter fw = new FileWriter("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[row].getName()+".txt");
 				        fw.write(edit);
 				        fw.flush();
 				        fw.close();
 						table.setValueAt(edit,row,column);
-						}catch(IOException e2){}
+						}catch(IOException e2){}*/
 				}
 			}
 			
@@ -179,13 +183,8 @@ public class UserInterfaceWindow extends JFrame {
 				if( row>=0 && column==1){
 					 int option = JOptionPane.showConfirmDialog(null, "這個動作將會清除所有Tags 繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
 					 if(option==0){
-							try{
-						        FileWriter fw = new FileWriter("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[row].getName()+".txt");
-						        fw.write("");
-						        fw.flush();
-						        fw.close();
-								table.setValueAt("",row,column);
-								}catch(IOException e2){}
+							table.setValueAt("",row,column);
+							datalist[row].changeTag("");
 					 }
 
 				}
@@ -201,7 +200,7 @@ public class UserInterfaceWindow extends JFrame {
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==0){
 					int option = JOptionPane.showConfirmDialog(null, "這個動作將會刪除這個檔案  繼續 ?", "Exit", JOptionPane.YES_NO_OPTION);
-					if(option!=0){
+					if(option==0){
 						File tag = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\"+list[row].getName()+".txt");
 						File data = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\"+list[row].getName());
 						tag.delete();
