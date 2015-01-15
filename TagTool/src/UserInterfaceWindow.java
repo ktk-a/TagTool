@@ -52,7 +52,7 @@ public class UserInterfaceWindow extends JFrame {
 		String s[]={"fileName","Tags"};
 		DTM.setColumnIdentifiers(s);
 		Root a = new Root();
-		File f = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool");
+		File f = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool","1.txt");
 		if(!f.exists()){
 			f.getParentFile().mkdirs();
 		}
@@ -61,7 +61,7 @@ public class UserInterfaceWindow extends JFrame {
 			t.getParentFile().mkdirs();
 		}
 		
-		File[] list = f.listFiles();
+		File[] list = f.getParentFile().listFiles();
 		Data[] datalist = new Data[list.length];
 		for(int i=0;i<datalist.length;i++){
 			String tagStr = new String("");
@@ -114,8 +114,9 @@ public class UserInterfaceWindow extends JFrame {
 					DTM.removeRow(0);
 				String searchStr = new String(searchText.getText());
 				if(searchStr.equals("")){
-					File[] list = f.listFiles();
+					File[] list = f.getParentFile().listFiles();
 					Data[] datalist = new Data[list.length];
+
 					for(int i=0;i<datalist.length;i++){
 						String tagStr = new String("");
 						File tags = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\"+list[i].getName()+".txt");
@@ -268,7 +269,7 @@ public class UserInterfaceWindow extends JFrame {
 		addButton.setBounds(624, 128, 87, 23);
 		contentPane.add(addButton);
 		
-		JLabel root = new JLabel(list[0].getParentFile().getPath());
+		JLabel root = new JLabel("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool");
 		root.setBounds(43, 97, 342, 21);
 		contentPane.add(root);
 		
