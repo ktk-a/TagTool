@@ -39,6 +39,9 @@ public class Data {
 			}catch(IOException e2){}
 
 	}
+	public String getDataDir(){
+		return dataDirectory;
+	} 
 	
 	public boolean tagExist(){	//該data是否有tag(已完成)
 		if(tags=="")
@@ -57,7 +60,9 @@ public class Data {
 	}
 
 	private void tagToken(String tagString){
+		tagCount=0;
 		if(tagString.equals("")){
+			
 		}else{
 			StringTokenizer Tok=new StringTokenizer(tagString,",");	//以","做區隔
 			String buffer="";

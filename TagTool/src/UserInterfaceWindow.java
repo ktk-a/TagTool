@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 
 public class UserInterfaceWindow extends JFrame {
@@ -51,20 +52,27 @@ public class UserInterfaceWindow extends JFrame {
 		String s[]={"fileName","Tags"};
 		DTM.setColumnIdentifiers(s);
 		Root a = new Root();
-		File f = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\images\\");
-		File[] list = f.listFiles();
+		File f = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tagTool");
+		if(!f.exists()){
+			f.getParentFile().mkdirs();
+		}
+		File t = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags","1.txt");
+		if(!t.exists()){
+			t.getParentFile().mkdirs();
+		}
 		
+		File[] list = f.listFiles();
 		Data[] datalist = new Data[list.length];
 		for(int i=0;i<datalist.length;i++){
-			String tagStr = new String("None");
-			File tags = new File("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\",list[i].getName()+".txt");
+			String tagStr = new String("");
+			File tags = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\"+list[i].getName()+".txt");
 			if(!tags.exists())
 				try{
 				tags.createNewFile();
 				}catch(IOException e){}
 			else{
 				try{
-					FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[i].getName()+".txt");
+					FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\" + list[i].getName()+".txt");
 					BufferedReader br = new BufferedReader(FileStream);
 					tagStr= br.readLine();
 					if(tagStr==null)
@@ -88,7 +96,7 @@ public class UserInterfaceWindow extends JFrame {
 		//	System.out.println(datalist[i].dataDirectory);
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 400);
+		setBounds(100, 100, 755, 489);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 206, 209));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -96,7 +104,7 @@ public class UserInterfaceWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		JTextPane searchText = new JTextPane();
-		searchText.setBounds(43, 47, 114, 21);
+		searchText.setBounds(43, 47, 175, 21);
 		contentPane.add(searchText);
 		
 		JButton searchButton = new JButton("Search");
@@ -106,6 +114,30 @@ public class UserInterfaceWindow extends JFrame {
 					DTM.removeRow(0);
 				String searchStr = new String(searchText.getText());
 				if(searchStr.equals("")){
+					File[] list = f.listFiles();
+					Data[] datalist = new Data[list.length];
+					for(int i=0;i<datalist.length;i++){
+						String tagStr = new String("");
+						File tags = new File("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\"+list[i].getName()+".txt");
+						if(!tags.exists())
+							try{
+							tags.createNewFile();
+							}catch(IOException e2){}
+						else{
+							try{
+								FileReader FileStream= new FileReader("C:\\Users\\"+ a.userName() +"\\Pictures\\tags\\" + list[i].getName()+".txt");
+								BufferedReader br = new BufferedReader(FileStream);
+								tagStr= br.readLine();
+								if(tagStr==null)
+									tagStr="";
+							}catch(IOException e2){
+								System.out.println("error");
+								tagStr="";
+							}
+						}
+						datalist[i] = new Data(); 
+						datalist[i].defaultData(list[i].getName(),tagStr,tags.getAbsolutePath(),list[i].getAbsolutePath());
+					}
 					for(int i =0;i<datalist.length;i++)
 						DTM.addRow(new Object[]{datalist[i].getDataName(),datalist[i].tags});
 				}else{
@@ -117,7 +149,7 @@ public class UserInterfaceWindow extends JFrame {
 			}
 		});
 		searchButton.setForeground(new Color(0, 0, 0));
-		searchButton.setBounds(167, 47, 87, 23);
+		searchButton.setBounds(228, 47, 87, 23);
 		contentPane.add(searchButton);
 		
 		JButton logoutButton = new JButton("Logout");
@@ -128,12 +160,12 @@ public class UserInterfaceWindow extends JFrame {
 				UserInterfaceWindow.this.dispose();
 			}
 		});
-		logoutButton.setBounds(456, 20, 87, 23);
+		logoutButton.setBounds(624, 391, 87, 23);
 		contentPane.add(logoutButton);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(43, 128, 392, 224);
+		scrollPane.setBounds(43, 128, 554, 294);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -158,21 +190,17 @@ public class UserInterfaceWindow extends JFrame {
 				int row =table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				if( row>=0 && column==1){
-					String edit = JOptionPane.showInputDialog("請輸入修改後的tag");
-					datalist[row].changeTag(edit);
-					table.setValueAt(edit,row,column);
-	/*				try{
-				        FileWriter fw = new FileWriter("C:\\Users\\"+ a.userName() +"\\git\\TagTool\\TagTool\\tags\\" + list[row].getName()+".txt");
-				        fw.write(edit);
-				        fw.flush();
-				        fw.close();
+					String edit = JOptionPane.showInputDialog(null,"請輸入修改後的tag", "Exit", JOptionPane.YES_NO_OPTION);
+					if(edit.equals(null)){}
+					else{
 						table.setValueAt(edit,row,column);
-						}catch(IOException e2){}*/
+						datalist[row].changeTag(edit);
+					}
 				}
 			}
 			
 		});
-		editButton.setBounds(456, 223, 87, 23);
+		editButton.setBounds(624, 163, 87, 23);
 		contentPane.add(editButton);
 		
 		JButton clearButton = new JButton("Clear");
@@ -190,7 +218,7 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 		});
-		clearButton.setBounds(456, 265, 87, 23);
+		clearButton.setBounds(624, 196, 87, 23);
 		contentPane.add(clearButton);
 		
 		JButton removeButton = new JButton("Remove");
@@ -213,8 +241,44 @@ public class UserInterfaceWindow extends JFrame {
 				}
 			}
 		});
-		removeButton.setBounds(456, 307, 87, 23);
+		removeButton.setBounds(624, 229, 87, 23);
 		contentPane.add(removeButton);
+		
+		JButton addButton = new JButton("Add tag");
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row =table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				if( row>=0 && column==1){
+					String edit = JOptionPane.showInputDialog(null,"請輸入欲新增的tag", "Exit", JOptionPane.YES_NO_OPTION);
+					if(edit.equals(null)||edit.equals("")){}
+					else{
+						if(datalist[row].getCount()==0){
+							datalist[row].changeTag(edit + datalist[row].tags);
+							table.setValueAt(datalist[row].tags,row,column);
+						}
+						else{
+							datalist[row].changeTag(datalist[row].tags+","+edit);
+							table.setValueAt(datalist[row].tags,row,column);
+						}
+					}
+				}
+			}
+		});
+		addButton.setBounds(624, 128, 87, 23);
+		contentPane.add(addButton);
+		
+		JLabel root = new JLabel(list[0].getParentFile().getPath());
+		root.setBounds(43, 97, 342, 21);
+		contentPane.add(root);
+		
+		JButton rootChange = new JButton("更換目錄");
+		rootChange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		rootChange.setBounds(499, 96, 87, 23);
+		contentPane.add(rootChange);
 	}
 		
 	
