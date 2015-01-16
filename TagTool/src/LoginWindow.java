@@ -23,11 +23,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.io.*;
+import javax.swing.DropMode;
+import javax.swing.JPasswordField;
 
 
 public class LoginWindow<C> extends JFrame {
 
 	private JPanel contentPane;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -63,8 +66,8 @@ public class LoginWindow<C> extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("設計師/檔案管理員登入");
-		lblNewLabel.setBounds(147, 70, 133, 15);
+		JLabel lblNewLabel = new JLabel("請輸入帳號密碼");
+		lblNewLabel.setBounds(100, 70, 214, 15);
 		contentPane.add(lblNewLabel);
 		
 		//accountText
@@ -72,12 +75,6 @@ public class LoginWindow<C> extends JFrame {
 		accountText.setForeground(Color.GRAY);
 		accountText.setBounds(87, 89, 239, 21);
 		contentPane.add(accountText);
-		
-		//passwordText
-		JTextPane passwordText = new JTextPane();
-		passwordText.setLocation(87, 120);
-		passwordText.setSize(239, 21);
-		contentPane.add(passwordText);
 		
 		//accountLabel
 		JLabel account = new JLabel("帳號：");
@@ -93,22 +90,28 @@ public class LoginWindow<C> extends JFrame {
 		JButton loginButton = new JButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UserInterfaceWindow ui = new UserInterfaceWindow();
+/*				UserInterfaceWindow ui = new UserInterfaceWindow();
 				ui.show();
 				LoginWindow.this.dispose();
-
+*/
 				String account_ck = new String(accountText.getText());
-				String password_ck = new String(passwordText.getText());
-		/*		if(account_ck.hashCode()==accountHash&&password_ck.hashCode()==passwordHash){
+				String password_ck = new String(passwordField.getText());
+				if(account_ck.hashCode()==accountHash&&password_ck.hashCode()==passwordHash){
 					UserInterfaceWindow ui = new UserInterfaceWindow();
 					ui.show();
-					LoginWindow.this.dispose();
-				}else
-					System.out.println("2");*/
+				}else{
+					lblNewLabel.setText("帳號或密碼錯誤，請重新輸入");
+					accountText.setText("");
+					passwordField.setText("");
+				}
 			}
 		});
 		loginButton.setBounds(159, 151, 87, 23);
 		contentPane.add(loginButton);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(87, 120, 239, 21);
+		contentPane.add(passwordField);
 		
 		
 

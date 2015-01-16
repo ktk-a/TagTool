@@ -176,7 +176,6 @@ public class UserInterfaceWindow extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(43, 128, 554, 294);
 		contentPane.add(scrollPane);
-		
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
